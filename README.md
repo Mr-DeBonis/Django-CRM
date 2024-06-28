@@ -6,3 +6,10 @@
 ```
 pip install -r requirements.txt
 ```
+
+# Database migration
+
+1. After creating a model, run:
+`python manage.py makemigrations`
+2. To load to DB: 
+`python manage.py migrate`
