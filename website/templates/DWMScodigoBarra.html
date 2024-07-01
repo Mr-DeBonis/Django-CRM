@@ -8,10 +8,10 @@
         {% csrf_token %}
         <div class="input-group mb-3">
             <input type="text" class="form-control" placeholder="Código Producto" name="searched">
-            <button type="submit" class="btn btn-primary" id="button-addon1" >Buscar</button>
+            <button type="submit" class="btn btn-primary" id="button-addon1">Buscar</button>
         </div>
     </form>
-    
+
     {% if producto %}
     <div class="card">
         <div class="card-body">
@@ -23,6 +23,42 @@
             </p>
         </div>
     </div>
+    <br/>
+
+    {% if codigos_barra %}
+    <table class="table table-striped table-hover table-bordered">
+        <thead class="table-dark">
+            <tr>
+                <th scope="col">Código</th>
+                <th scope="col">Cantidad</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for codigo_barra in codigos_barra %}
+                <tr>
+                    <td>{{ codigo_barra.codigo }}</td>
+                    <td>{{ codigo_barra.cantidad }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
     {% endif %}
+
+    <h2>Agregar nuevo código de barra</h2>
+    <form method="POST" action="{% url 'DWMScodigoBarra' %}">
+        {% csrf_token %}
+        <input type="hidden" name="producto_id" value="{{ producto.id }}">
+        <div class="form-group">
+            <label for="codigo_barra">Código Barra:</label>
+            <input type="text" class="form-control" id="codigo_barra" name="codigo_barra">
+        </div>
+        <div class="form-group">
+            <label for="cantidad">Cantidad:</label>
+            <input type="number" class="form-control" id="cantidad" name="cantidad">
+        </div>
+        <button type="submit" class="btn btn-success">Guardar</button>
+    </form>
     {% endif %}
+{% endif %}
+
 {% endblock %}

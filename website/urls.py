@@ -15,4 +15,5 @@ urlpatterns = [
     path('producto/', views_dwms.producto, name='producto'),
     path('add_producto/', views_dwms.add_producto, name='add_producto'),
     path('DWMScodigoBarra/', views_dwms.DWMScodigoBarra, name='DWMScodigoBarra'),
+    #path('DWMS_add_codigoBarra/', views_dwms.DWMS_add_codigoBarra, name='DWMS_add_codigoBarra'),
 ]
