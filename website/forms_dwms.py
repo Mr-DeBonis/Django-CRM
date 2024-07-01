@@ -11,3 +11,11 @@ class FormAddProducto(forms.ModelForm):
     class Meta:
         model = Producto
         exclude = ("user", )
+
+
+class FormSearchProducto(forms.ModelForm):
+    codigo_producto = forms.CharField(required=True, widget=forms.widgets.TextInput(attrs={"placeholder":"Delfos", "class":"form-control"} ), label="")
+
+    class Meta:
+        model = Producto
+        exclude = ("user", )

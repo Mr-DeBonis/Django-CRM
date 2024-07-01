@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block content %}
+
+{% if user.is_authenticated %}
+    <h1>Búsqueda de producto</h1>
+    <br/>
+    <form method="POST" action="{% url 'DWMScodigoBarra' %}" class="navbar-form navbar-left" role="search">
+        {% csrf_token %}
+        <div class="input-group mb-3">
+            <input type="text" class="form-control" placeholder="Código Producto" name="searched">
+            <button type="submit" class="btn btn-primary" id="button-addon1" >Buscar</button>
+        </div>
+    </form>
+    
+    {% if producto %}
+    <div class="card">
+        <div class="card-body">
+            <p class="card-text">
+                <strong>Nro Parte: </strong>{{ producto.codigo_producto }}
+            </p>
+            <p class="card-text">
+                <strong>Descripción item: </strong>{{ producto.descripcion_producto }}
+            </p>
+        </div>
+    </div>
+    {% endif %}
+    {% endif %}
+{% endblock %}

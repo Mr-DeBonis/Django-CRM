@@ -11,10 +11,13 @@
           <a class="nav-link" href="{% url 'add_record' %}">Add Record</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+          <a class="nav-link" href="{% url 'producto' %}">Productos</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="{% url 'producto' %}">Productos</a>
+          <a class="nav-link" href="{% url 'DWMScodigoBarra' %}">Código de barras</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'logout' %}">Logout</a>
         </li>
         {% else %}
         <li class="nav-item">
