@@ -1,7 +1,7 @@
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django import forms
-from .models_dwms import Producto
+from .models_dwms import Producto, dwms_guia_headers, dwms_guia_detail
 
 class FormAddProducto(forms.ModelForm):
     inventory_item_id = forms.CharField(required=True, widget=forms.widgets.NumberInput(attrs={"placeholder":"ID inventario", "class":"form-control"} ), label="")
@@ -18,4 +18,13 @@ class FormSearchProducto(forms.ModelForm):
 
     class Meta:
         model = Producto
+        exclude = ("user", )
+
+
+class FormGuiaHeader(forms.ModelForm):
+    add_header = forms.BooleanField(widget=forms.HiddenInput, initial=True)
+    folio = forms.IntegerField(widget=forms.widgets.NumberInput(attrs={"placeholder":"Folio guía", "class":"form-control", "name":"folio"}), label="")
+    class Meta:
+        model = dwms_guia_headers
+        fields = ['folio']
         exclude = ("user", )

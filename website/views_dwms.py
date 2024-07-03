@@ -3,8 +3,8 @@ from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
-from .forms_dwms import FormAddProducto
-from .models_dwms import Producto, dwms_codigo_barra
+from .forms_dwms import FormAddProducto, FormGuiaHeader
+from .models_dwms import Producto, dwms_codigo_barra, dwms_guia_headers, dwms_guia_detail
 
 
 def producto(request):
@@ -59,14 +59,21 @@ def DWMScodigoBarra(request):
         return render(request, "DWMScodigoBarra.html", {})
 
 
-#def DWMS_add_codigoBarra(request):
-#    if request.method == "POST":
-#        codigo_producto = request.POST.get('codigo_producto')
-#        print(codigo_producto)
-#        
-#        #print("Se ha buscado: " + codigo)
-#        producto = Producto.objects.filter(codigo_producto__contains=codigo_producto).first()
-#        codigos_barra = dwms_codigo_barra.objects.filter(producto = producto).select_related()
-#        return render(request, "DWMScodigoBarra.html", {'searched': producto.codigo_producto, 'producto': producto, 'codigos_barra' : codigos_barra})
-#    else:
-#        return render(request, "DWMScodigoBarra.html", {})
+def DWMSrevisionPicking(request):
+    form_guia = FormGuiaHeader(request.POST or None)
+    header_id = None
+    if request.method == "POST":
+        if 'folio' in request.POST:
+            if form_guia.is_valid():
+                folio = form_guia.cleaned_data.get('folio')
+                try:
+                    guia_header = dwms_guia_headers.objects.get(folio=folio)
+                    header_id = guia_header.id
+                except dwms_guia_headers.DoesNotExist:
+                    messages.error(request, "No se ha encontrado el folio")
+                    return render(request, "DWMSrevisionPicking.html", {"form_guia":form_guia})
+            else:
+                print("Form is not valid")
+        else:
+            print('No form_guia')
+    return render(request, "DWMSrevisionPicking.html", {"form_guia":form_guia})

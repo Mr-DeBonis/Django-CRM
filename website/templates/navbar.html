@@ -16,21 +16,8 @@
         <li class="nav-item">
           <a class="nav-link" href="{% url 'DWMScodigoBarra' %}">Código de barras</a>
         </li>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
-            Guía de picking
-          </a>
-          <ul class="dropdown-menu">
-            <li class="nav-item">
-              <a class="dropdown-item" href="{% url 'DWMS_add_guia' %}">Añadir guía</a>
-            </li>
-            <li class="nav-item">
-              <a class="dropdown-item" href="#">Añadir producto a guía</a>
-            </li>
-            <li class="nav-item">
-              <a class="dropdown-item" href="#">Revisar guía</a>
-            </li>
-          </ul>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'DWMSrevisionPicking' %}">Guía de picking</a>
         </li>
         {% else %}
         <li class="nav-item">
