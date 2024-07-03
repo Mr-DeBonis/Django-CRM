@@ -42,7 +42,6 @@ def DWMScodigoBarra(request):
             codigo_producto = producto.codigo_producto
             codigos_barra = dwms_codigo_barra.objects.filter(producto=producto)
 
-
             if codigo_barra and cantidad:
                 dwms_codigo_barra.objects.create(
                     producto=producto,
@@ -53,8 +52,8 @@ def DWMScodigoBarra(request):
                     fecha_creacion=timezone.now(),
                     fecha_modificacion=timezone.now()
                 )
-            return render(request, "DWMScodigoBarra.html", {'searched': codigo_producto , 'producto': producto, 'codigos_barra' : codigos_barra})
-            
+            return render(request, "DWMScodigoBarra.html", {'searched': codigo_producto, 'producto': producto, 'codigos_barra': codigos_barra})
+
     else:
         return render(request, "DWMScodigoBarra.html", {})
 
@@ -62,18 +61,27 @@ def DWMScodigoBarra(request):
 def DWMSrevisionPicking(request):
     form_guia = FormGuiaHeader(request.POST or None)
     header_id = None
+    guia_details = []
+
     if request.method == "POST":
-        if 'folio' in request.POST:
-            if form_guia.is_valid():
-                folio = form_guia.cleaned_data.get('folio')
-                try:
-                    guia_header = dwms_guia_headers.objects.get(folio=folio)
-                    header_id = guia_header.id
-                except dwms_guia_headers.DoesNotExist:
-                    messages.error(request, "No se ha encontrado el folio")
-                    return render(request, "DWMSrevisionPicking.html", {"form_guia":form_guia})
-            else:
-                print("Form is not valid")
+        if form_guia.is_valid():
+            folio = form_guia.cleaned_data.get('folio')
+            print(form_guia.cleaned_data.get('search_guia_header'))
+
+            try:
+                guia_header = dwms_guia_headers.objects.get(folio=folio)
+                guia_details = dwms_guia_detail.objects.filter(header=guia_header).select_related()
+                print(type(guia_details))
+                context = {
+                    'form_guia': form_guia,
+                    'guia_details':guia_details}
+                return render(request, "DWMSrevisionPicking.html", context=context)
+                
+            except dwms_guia_headers.DoesNotExist:
+                messages.error(request, "No se ha encontrado el folio")
+                return render(request, "DWMSrevisionPicking.html", {"form_guia": form_guia})
         else:
-            print('No form_guia')
-    return render(request, "DWMSrevisionPicking.html", {"form_guia":form_guia})
+            print("Form is not valid")
+            print(form_guia.errors)
+            messages.error(request, "Form is not valid. Errors: {}".format(form_guia.errors))
+    return render(request, "DWMSrevisionPicking.html", {"form_guia": form_guia})

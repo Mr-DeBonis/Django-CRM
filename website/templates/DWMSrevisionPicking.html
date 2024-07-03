@@ -14,8 +14,29 @@
             <button type="submit" class="btn btn-primary mb-3" role="button">Buscar</button>
         </div>
     </form>
-
+    <br/>
+    
+    {% endif %}
+    
+    {% if guia_details %}
+    <h2>Items pendientes</h2>
+    <br/>
+    <table class="table table-striped table-hover ">
+        <thead class="table-info">
+            <tr>
+                <th scope="col">Código</th>
+                <th scope="col">Descripción</th>
+            </tr>
+        </thead>
+        {% for detail in guia_details %}
+            <tr>
+                <td>{{ detail.producto.codigo_producto }}</td>
+                <td>{{ detail.producto.descripcion_producto }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+    {% endif %}
 </div>
-{% endif %}
+
 
 {% endblock %}

@@ -22,9 +22,13 @@ class FormSearchProducto(forms.ModelForm):
 
 
 class FormGuiaHeader(forms.ModelForm):
-    add_header = forms.BooleanField(widget=forms.HiddenInput, initial=True)
+    search_guia_header = forms.BooleanField(widget=forms.HiddenInput, initial=True)
     folio = forms.IntegerField(widget=forms.widgets.NumberInput(attrs={"placeholder":"Folio guía", "class":"form-control", "name":"folio"}), label="")
     class Meta:
         model = dwms_guia_headers
         fields = ['folio']
         exclude = ("user", )
+
+class FormGuiaDetails(forms.ModelForm):
+    pass
+
