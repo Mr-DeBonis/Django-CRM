@@ -16,8 +16,21 @@
         <li class="nav-item">
           <a class="nav-link" href="{% url 'DWMScodigoBarra' %}">Código de barras</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+            Guía de picking
+          </a>
+          <ul class="dropdown-menu">
+            <li class="nav-item">
+              <a class="dropdown-item" href="{% url 'DWMS_add_guia' %}">Añadir guía</a>
+            </li>
+            <li class="nav-item">
+              <a class="dropdown-item" href="#">Añadir producto a guía</a>
+            </li>
+            <li class="nav-item">
+              <a class="dropdown-item" href="#">Revisar guía</a>
+            </li>
+          </ul>
         </li>
         {% else %}
         <li class="nav-item">
@@ -28,6 +41,9 @@
         </li>
         {% endif %}
       </ul>
+      {% if user.is_authenticated %}
+      <a class="btn btn-outline-danger" href="{% url 'logout' %}">Logout</a>
+      {% endif %}
     </div>
   </div>
 </nav>
