@@ -3,7 +3,7 @@ from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
-from .forms_dwms import FormAddProducto, FormGuiaHeader
+from .forms_dwms import FormAddProducto, FormGuiaHeader, FormCodigoBarrasCantidad
 from .models_dwms import Producto, dwms_codigo_barra, dwms_guia_headers, dwms_guia_detail
 
 
@@ -60,28 +60,33 @@ def DWMScodigoBarra(request):
 
 def DWMSrevisionPicking(request):
     form_guia = FormGuiaHeader(request.POST or None)
-    header_id = None
+    form_codigo_barras_cantidad = FormCodigoBarrasCantidad(request.POST or None)
     guia_details = []
+    folio = ''
 
     if request.method == "POST":
-        if form_guia.is_valid():
-            folio = form_guia.cleaned_data.get('folio')
-            print(form_guia.cleaned_data.get('search_guia_header'))
-
+        folio = request.POST.get("folio", False)
+        if folio:
             try:
+                print("folio: " + str(folio))
                 guia_header = dwms_guia_headers.objects.get(folio=folio)
                 guia_details = dwms_guia_detail.objects.filter(header=guia_header).select_related()
-                print(type(guia_details))
-                context = {
-                    'form_guia': form_guia,
-                    'guia_details':guia_details}
-                return render(request, "DWMSrevisionPicking.html", context=context)
-                
             except dwms_guia_headers.DoesNotExist:
                 messages.error(request, "No se ha encontrado el folio")
-                return render(request, "DWMSrevisionPicking.html", {"form_guia": form_guia})
-        else:
-            print("Form is not valid")
-            print(form_guia.errors)
-            messages.error(request, "Form is not valid. Errors: {}".format(form_guia.errors))
-    return render(request, "DWMSrevisionPicking.html", {"form_guia": form_guia})
+
+        codigo_barra = request.POST.get("codigo_barra", False)
+        if codigo_barra:
+            try:
+                guia_details = dwms_guia_detail.objects.filter(header=guia_header).select_related()
+            except: 
+                pass
+
+
+    context = {
+        'form_guia' : form_guia,
+        'form_codigo_barras_cantidad' : form_codigo_barras_cantidad,
+        'guia_details' : guia_details,
+        'folio': folio
+    }
+
+    return render(request, "DWMSrevisionPicking.html", context=context)

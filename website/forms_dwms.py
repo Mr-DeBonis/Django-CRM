@@ -4,8 +4,8 @@ from django import forms
 from .models_dwms import Producto, dwms_guia_headers, dwms_guia_detail
 
 class FormAddProducto(forms.ModelForm):
-    inventory_item_id = forms.CharField(required=True, widget=forms.widgets.NumberInput(attrs={"placeholder":"ID inventario", "class":"form-control"} ), label="")
-    codigo_producto = forms.CharField(required=True, widget=forms.widgets.TextInput(attrs={"placeholder":"Delfos", "class":"form-control"} ), label="")
+    inventory_item_id    = forms.CharField(required=True, widget=forms.widgets.NumberInput(attrs={"placeholder":"ID inventario", "class":"form-control"} ), label="")
+    codigo_producto      = forms.CharField(required=True, widget=forms.widgets.TextInput(attrs={"placeholder":"Delfos", "class":"form-control"} ), label="")
     descripcion_producto = forms.CharField(required=True, widget=forms.widgets.TextInput(attrs={"placeholder":"Descripción", "class":"form-control"} ), label="")
 
     class Meta:
@@ -22,13 +22,41 @@ class FormSearchProducto(forms.ModelForm):
 
 
 class FormGuiaHeader(forms.ModelForm):
-    search_guia_header = forms.BooleanField(widget=forms.HiddenInput, initial=True)
-    folio = forms.IntegerField(widget=forms.widgets.NumberInput(attrs={"placeholder":"Folio guía", "class":"form-control", "name":"folio"}), label="")
+    folio = forms.IntegerField(
+        required = False,
+        widget=forms.widgets.NumberInput(attrs={
+            "placeholder":"Folio guía", 
+            "class":"form-control mb-9", 
+            "name":"folio", 
+            "required min":"1"}), label="")
     class Meta:
         model = dwms_guia_headers
         fields = ['folio']
         exclude = ("user", )
 
-class FormGuiaDetails(forms.ModelForm):
-    pass
+
+class FormCodigoBarrasCantidad(forms.Form):
+    codigo_barra = forms.CharField(
+        required=False,
+        widget=forms.widgets.TextInput(attrs={
+            "placeholder":"Código de barras", 
+            "class":"form-control"}), 
+            label="Código de barras")
+    
+    cantidad_producto = forms.IntegerField(
+        required=False,
+        initial=1,
+        widget=forms.widgets.NumberInput(attrs={
+            "placeholder":"Cantidad escaneada", 
+            "class":"form-control",  
+            "required min":"1"}), 
+            label="Cantidad")
+    
+    def __init__(self, *args, **kwargs):
+        super(FormCodigoBarrasCantidad, self).__init__(*args, **kwargs)
+        self.fields['codigo_barra'].widget.attrs.update({'class': 'form-control', 'placeholder': 'Código de Barra'})
+        self.fields['cantidad_producto'].widget.attrs.update({'class': 'form-control', 'placeholder': 'Cantidad escaneada'})
+
+
+    
 
