@@ -1,3 +1,4 @@
+from datetime import datetime
 from django.utils import timezone
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
@@ -58,14 +59,17 @@ def DWMScodigoBarra(request):
         return render(request, "DWMScodigoBarra.html", {})
 
 
-def DWMSrevisionPicking(request):
+def DWMSrevisionPicking(request, folio = ''):
     form_guia = FormGuiaHeader(request.POST or None)
     form_codigo_barras_cantidad = FormCodigoBarrasCantidad(request.POST or None)
     guia_details = []
-    folio = ''
+    
 
     if request.method == "POST":
         folio = request.POST.get("folio", False)
+        codigo_barra = request.POST.get("codigo_barra", False)
+        cantidad_producto = request.POST.get("cantidad_producto", False)
+
         if folio:
             try:
                 print("folio: " + str(folio))
@@ -74,12 +78,29 @@ def DWMSrevisionPicking(request):
             except dwms_guia_headers.DoesNotExist:
                 messages.error(request, "No se ha encontrado el folio")
 
-        codigo_barra = request.POST.get("codigo_barra", False)
         if codigo_barra:
+            # Obtener producto y cantidad asociada al codigo de barras.
+            # Marcar guia_detai lcomo revisado, indicar datetime y estado de revision
             try:
-                guia_details = dwms_guia_detail.objects.filter(header=guia_header).select_related()
-            except: 
-                pass
+                barcode =  dwms_codigo_barra.objects.get(codigo=codigo_barra)
+                guia_detail = dwms_guia_detail.objects.filter(
+                    header=guia_header,
+                    producto=barcode.producto).get()
+
+                print(guia_detail.revisado)
+                
+                cantidad_producto = int(cantidad_producto) * barcode.cantidad
+                print(type(cantidad_producto))
+                print(type(guia_detail.cantidad_producto))
+
+                if cantidad_producto == guia_detail.cantidad_producto:
+                    print("Cantidades iguales")
+                    guia_detail.revisado = True
+                    guia_detail.fecha_revision = timezone.make_aware(datetime.now())
+                    guia_detail.save()
+            except dwms_guia_detail.DoesNotExist:
+                messages.error(request, "Este producto no está en la guía")
+
 
 
     context = {

@@ -3,6 +3,7 @@ from datetime import datetime
 from django.contrib.auth.models import User
 
 class dwms_guia_headers(models.Model):
+    # TODO: CAMBIAR NOMBRE A SINGULAR; NO PLURAL
     folio              = models.IntegerField(blank=True, null=True, verbose_name='Folio')
     peso               = models.IntegerField(blank=True, null=True, verbose_name='Peso (gramos)')
     cantidad_bultos    = models.IntegerField(blank=True, null=True, verbose_name='Cantidad de Bultos')
@@ -30,7 +31,7 @@ class dwms_guia_headers(models.Model):
 class dwms_guia_detail(models.Model):
     header            = models.ForeignKey('dwms_guia_headers', blank=True, null=True, on_delete=models.DO_NOTHING)
     producto          = models.ForeignKey('Producto', blank=True, null=True, on_delete=models.DO_NOTHING)
-    fecha_revision    = models.DateTimeField(null=True, blank=True, verbose_name='Fecha de Revision')
+    fecha_revision    = models.DateTimeField(null=True, blank=True, verbose_name='Fecha de Revision') # Añadir auto_now = True
     revisado          = models.BooleanField(default=False, verbose_name='Revisado')
     cantidad_producto = models.IntegerField(blank=True, null=True, verbose_name='Cantidad de Productos')
 
@@ -39,6 +40,7 @@ class dwms_guia_detail(models.Model):
         verbose_name_plural = 'Lineas'
 
 class dwms_codigo_barra(models.Model):
+    # TODO Marcar codigo como único
     producto           = models.ForeignKey('Producto', blank=True, null=True, on_delete=models.DO_NOTHING)
     codigo             = models.CharField(max_length=1000, blank=True, null=True, verbose_name='Codigo')
     cantidad           = models.IntegerField(blank=True, null=True, verbose_name='Cantidad')
