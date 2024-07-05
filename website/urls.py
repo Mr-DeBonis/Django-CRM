@@ -17,4 +17,5 @@ urlpatterns = [
     path('DWMScodigoBarra/', views_dwms.DWMScodigoBarra, name='DWMScodigoBarra'),
     path('DWMSrevisionPicking/', views_dwms.DWMSrevisionPicking, name='DWMSrevisionPicking'),
     path('DWMSLlamarSupervisor/<int:pk>', views_dwms.DWMSLlamarSupervisor, name='DWMSLlamarSupervisor'),
+    path('DWMSEmpaquetado/<int:pk>', views_dwms.DWMSEmpaquetado, name='DWMSEmpaquetado'),
 ]

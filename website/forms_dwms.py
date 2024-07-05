@@ -58,5 +58,27 @@ class FormCodigoBarrasCantidad(forms.Form):
         self.fields['cantidad_producto'].widget.attrs.update({'class': 'form-control', 'placeholder': 'Cantidad escaneada'})
 
 
+class FormEmpaquetado(forms.ModelForm):
+    peso = forms.IntegerField(
+        required = True,
+        initial=1,
+        widget = forms.widgets.NumberInput(attrs={
+            'placeholder' : 'Peso (gramos)',
+            "class":"form-control",
+            "required min" : "1"
+        }), label="Peso del bulto")
     
-
+    cantidad_bultos = forms.IntegerField(
+        required = True,
+        initial=1,
+        widget = forms.widgets.NumberInput(attrs={
+            'placeholder':'Cantidad de Bultos',
+            "class":"form-control",
+            "required min" : "1",
+            "id" : "cantidad_bultos"
+        }), label="Cantidad de bultos")
+    
+    class Meta:
+        model = dwms_guia_headers
+        fields = ['peso', 'cantidad_bultos']
+        exclude = ("user", )

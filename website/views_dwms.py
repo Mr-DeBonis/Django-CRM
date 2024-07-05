@@ -4,7 +4,7 @@ from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
-from .forms_dwms import FormAddProducto, FormGuiaHeader, FormCodigoBarrasCantidad
+from .forms_dwms import FormAddProducto, FormGuiaHeader, FormCodigoBarrasCantidad, FormEmpaquetado
 from .models_dwms import Producto, dwms_codigo_barra, dwms_guia_headers, dwms_guia_detail
 
 
@@ -124,3 +124,27 @@ def DWMSLlamarSupervisor(request, pk):
 
 
     return render(request, "DWMSLlamarSupervisor.html", context=context)
+
+
+def DWMSEmpaquetado(request, pk):
+    form_empaquetado = FormEmpaquetado(request.POST or None)
+    peso = request.POST.get("peso", False)
+    if peso:
+        guia_header = dwms_guia_headers.objects.get(folio=pk)
+
+        guia_header.peso = request.POST.get("peso")
+        guia_header.cantidad_bultos = request.POST.get("cantidad_bultos")
+        guia_header.etiquetado = True
+        guia_header.revisado = True
+        guia_header.fecha_revision = timezone.make_aware(datetime.now())
+        guia_header.user = request.user
+
+        guia_header.save()
+
+        return redirect("DWMSrevisionPicking")
+
+    context = {
+        'form_empaquetado': form_empaquetado
+    }
+    return render(request, "DWMSEmpaquetado.html", context=context)
+

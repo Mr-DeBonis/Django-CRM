@@ -70,7 +70,6 @@ class dwms_zona(models.Model):
         verbose_name_plural = 'Zonas'
 
 
-
 class Producto(models.Model):
     inventory_item_id = models.PositiveIntegerField()
     codigo_producto = models.CharField(max_length=50)
