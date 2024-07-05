@@ -38,14 +38,25 @@
     </table>
 
     <form method="POST" action="{% url 'DWMSrevisionPicking' %}">
-    <div class="col-auto">
-        {% csrf_token %}
-        {{ form_codigo_barras_cantidad.as_p }}
-        <input type="hidden" value="{{ folio }}" name="folio">
-    </div>
-    <div class="col-auto">
-        <button type="submit" class="btn btn-success">Agregar revisión</button>
+        <div class="col-12">
+            {% csrf_token %}
+            {{ form_codigo_barras_cantidad.as_p }}
+            <input type="hidden" value="{{ folio }}" name="folio">
+        </div>
+        <div class="row justify-content-center align-items-center g-3">
+            <div class="col col-auto p-3">
+                <button type="submit" class="btn btn-primary">Agregar revisión</button>
+            </div>
+        </div>
     </form>
+    <div class="row justify-content-evenly align-items-center">
+        <div class="col-auto">
+            <a class="btn btn-danger" href="{% url 'DWMSLlamarSupervisor' folio %}">Llamar a supervisor</a>
+        </div>
+        <div class="col-auto">
+            <a class="btn btn-success" href="">Continuar</a>
+        </div>
+    </div>
     {% endif %}
 
 </div>

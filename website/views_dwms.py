@@ -111,3 +111,16 @@ def DWMSrevisionPicking(request, folio = ''):
     }
 
     return render(request, "DWMSrevisionPicking.html", context=context)
+
+
+def DWMSLlamarSupervisor(request, pk):
+    guia_header = dwms_guia_headers.objects.get(folio=pk)
+    guia_details = dwms_guia_detail.objects.filter(header=guia_header).select_related()
+
+    context = {
+        'folio' : pk,
+        'guia_details' : guia_details
+    }
+
+
+    return render(request, "DWMSLlamarSupervisor.html", context=context)
