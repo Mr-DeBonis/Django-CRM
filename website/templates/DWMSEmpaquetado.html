@@ -3,6 +3,8 @@
 
 {% if user.is_authenticated %}
 <div class="col-md-6 offset-md-3">
+    {% if revisado_correcto %}
+
     <h1>Empaquetado</h1>
     <form method="POST" action="">
             {% csrf_token %}
@@ -21,6 +23,19 @@
             <button type="submit" class="btn btn-success mb-3" role="button">Guardar y cerrar</button>
         </div>
     </form>
+    {% else %}
+
+    <h1>Revisión incorrecta</h1>
+
+    <p>Por favor llamar a supervisor</p>
+
+    <div class="row justify-content-evenly align-items-center">
+        <div class="col-auto">
+            <a class="btn btn-danger" href="{% url 'DWMSLlamarSupervisor' folio %}">Llamar a supervisor</a>
+        </div>
+    </div>
+
+    {% endif %}
 </div>
 {% endif %}
 

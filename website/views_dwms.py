@@ -127,10 +127,20 @@ def DWMSLlamarSupervisor(request, pk):
 
 
 def DWMSEmpaquetado(request, pk):
+    revisado_correcto = True
+    guia_header = dwms_guia_headers.objects.get(folio=pk)
+
+    guia_details = dwms_guia_detail.objects.filter(header=guia_header).select_related()
+
+    for guia_detail in guia_details:
+        if guia_detail.revisado == False:
+            revisado_correcto = False
+            break
+
+
     form_empaquetado = FormEmpaquetado(request.POST or None)
     peso = request.POST.get("peso", False)
     if peso:
-        guia_header = dwms_guia_headers.objects.get(folio=pk)
 
         guia_header.peso = request.POST.get("peso")
         guia_header.cantidad_bultos = request.POST.get("cantidad_bultos")
@@ -144,7 +154,9 @@ def DWMSEmpaquetado(request, pk):
         return redirect("DWMSrevisionPicking")
 
     context = {
-        'form_empaquetado': form_empaquetado
+        'form_empaquetado': form_empaquetado,
+        'revisado_correcto' : revisado_correcto,
+        'folio' : pk
     }
     return render(request, "DWMSEmpaquetado.html", context=context)
 
