@@ -65,7 +65,8 @@ class FormEmpaquetado(forms.ModelForm):
         widget = forms.widgets.NumberInput(attrs={
             'placeholder' : 'Peso (gramos)',
             "class":"form-control",
-            "required min" : "1"
+            "required min" : "1",
+            'id':"pesoEmpaquetado"
         }), label="Peso del bulto")
     
     cantidad_bultos = forms.IntegerField(

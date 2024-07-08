@@ -6,20 +6,18 @@
     {% if revisado_correcto %}
 
     <h1>Empaquetado</h1>
-    <form method="POST" action="">
-            {% csrf_token %}
-            <div class="class="row g-3">
-                <div class="col-12">
-                    <label>Peso en gramos del bulto: </label>
-                    {{ form_empaquetado.peso }}
-                </div>
-            </div>
-            <div class="class="row g-3">
-                <div class="col-12">
-                    <label>Cantidad de bultos: </label>
-                    {{ form_empaquetado.cantidad_bultos }}
-                </div>
-        <div class="col-auto">
+    <form method="POST" class="row g-3" action="">
+        {% csrf_token %}
+        <div class="col-12">
+            <label class="form-label" for="pesoEmpaquetado">Peso en gramos del bulto: </label>
+            <br/>
+            {{ form_empaquetado.peso }}
+        </div>
+        <div class="col-12">
+            <label class="form-label" for="cantidad_bultos">Cantidad de bultos: </label>
+            {{ form_empaquetado.cantidad_bultos }}
+        </div>
+        <div class="col-12">
             <button type="submit" class="btn btn-success mb-3" role="button">Guardar y cerrar</button>
         </div>
     </form>
