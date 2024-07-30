@@ -227,3 +227,4 @@ local_settings.py
 
 *.env
 db.sqlite3
+website/migrations/__pycache__/
