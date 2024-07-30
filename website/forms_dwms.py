@@ -1,7 +1,7 @@
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django import forms
-from .models_dwms import Producto, dwms_guia_headers, dwms_guia_detail
+from .models_dwms import Producto, dwms_guia_header, dwms_guia_detail
 
 class FormAddProducto(forms.ModelForm):
     inventory_item_id    = forms.CharField(required=True, widget=forms.widgets.NumberInput(attrs={"placeholder":"ID inventario", "class":"form-control"} ), label="")
@@ -30,7 +30,7 @@ class FormGuiaHeader(forms.ModelForm):
             "name":"folio", 
             "required min":"1"}), label="")
     class Meta:
-        model = dwms_guia_headers
+        model = dwms_guia_header
         fields = ['folio']
         exclude = ("user", )
 
@@ -80,6 +80,6 @@ class FormEmpaquetado(forms.ModelForm):
         }), label="Cantidad de bultos")
     
     class Meta:
-        model = dwms_guia_headers
+        model = dwms_guia_header
         fields = ['peso', 'cantidad_bultos']
         exclude = ("user", )

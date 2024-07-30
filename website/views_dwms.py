@@ -5,7 +5,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from .forms_dwms import FormAddProducto, FormGuiaHeader, FormCodigoBarrasCantidad, FormEmpaquetado
-from .models_dwms import Producto, dwms_codigo_barra, dwms_guia_headers, dwms_guia_detail
+from .models_dwms import Producto, dwms_codigo_barra, dwms_guia_header, dwms_guia_detail
 
 
 def producto(request):
@@ -73,9 +73,9 @@ def DWMSrevisionPicking(request, folio = ''):
         if folio:
             try:
                 print("folio: " + str(folio))
-                guia_header = dwms_guia_headers.objects.get(folio=folio)
+                guia_header = dwms_guia_header.objects.get(folio=folio)
                 guia_details = dwms_guia_detail.objects.filter(header=guia_header).select_related()
-            except dwms_guia_headers.DoesNotExist:
+            except dwms_guia_header.DoesNotExist:
                 messages.error(request, "No se ha encontrado el folio")
 
         if codigo_barra:
@@ -114,7 +114,7 @@ def DWMSrevisionPicking(request, folio = ''):
 
 
 def DWMSLlamarSupervisor(request, pk):
-    guia_header = dwms_guia_headers.objects.get(folio=pk)
+    guia_header = dwms_guia_header.objects.get(folio=pk)
     guia_details = dwms_guia_detail.objects.filter(header=guia_header).select_related()
 
     context = {
@@ -128,7 +128,7 @@ def DWMSLlamarSupervisor(request, pk):
 
 def DWMSEmpaquetado(request, pk):
     revisado_correcto = True
-    guia_header = dwms_guia_headers.objects.get(folio=pk)
+    guia_header = dwms_guia_header.objects.get(folio=pk)
 
     guia_details = dwms_guia_detail.objects.filter(header=guia_header).select_related()
 

@@ -1,9 +1,12 @@
+#MODULO DWMS
+
+from __future__ import unicode_literals
 from django.db import models
+import subprocess
 from datetime import datetime
 from django.contrib.auth.models import User
 
-class dwms_guia_headers(models.Model):
-    # TODO: CAMBIAR NOMBRE A SINGULAR; NO PLURAL
+class dwms_guia_header(models.Model):
     folio              = models.IntegerField(blank=True, null=True, verbose_name='Folio')
     peso               = models.IntegerField(blank=True, null=True, verbose_name='Peso (gramos)')
     cantidad_bultos    = models.IntegerField(blank=True, null=True, verbose_name='Cantidad de Bultos')
@@ -29,7 +32,7 @@ class dwms_guia_headers(models.Model):
         verbose_name_plural = 'Guias'
 
 class dwms_guia_detail(models.Model):
-    header            = models.ForeignKey('dwms_guia_headers', blank=True, null=True, on_delete=models.DO_NOTHING)
+    header            = models.ForeignKey('dwms_guia_header', blank=True, null=True, on_delete=models.DO_NOTHING)
     producto          = models.ForeignKey('Producto', blank=True, null=True, on_delete=models.DO_NOTHING)
     fecha_revision    = models.DateTimeField(null=True, blank=True, verbose_name='Fecha de Revision') # Añadir auto_now = True
     revisado          = models.BooleanField(default=False, verbose_name='Revisado')
