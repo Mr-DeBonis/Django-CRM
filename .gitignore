@@ -5,6 +5,7 @@ dcrm.env# Django #
 __pycache__
 db.sqlite3
 media
+migrations/
 
 # Backup files # 
 *.bak 
@@ -226,3 +227,4 @@ local_settings.py
 
 *.env
 db.sqlite3
+website/migrations/__pycache__/
